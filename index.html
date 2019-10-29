@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Battleship</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="vertical-container">
+        <div class="sub-container">
+            <div>
+                <p id="instruction-label" class="hidden">Place destroyer...</p>
+                <div id="controls-panel" class="controls-panel">
+                    <button onclick="togglePlacingMode()">Setup Left Board</button>
+                    <button onclick="clearBoard(board1)">Clear Left Board</button>
+                    <button onclick="clearBoard(board2)">Clear Right Board</button>
+                </div>
+            </div>
+            <div class="board-container"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
