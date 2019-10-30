@@ -88,6 +88,9 @@ function registerBoardEvents(board,hoverGridTarget,allowCreation,lookup) {
     board.element.addEventListener("contextmenu",stopEvent);
     board.element.addEventListener("mousemove",function(event){
         stopEvent(event);
+        if(event.target === board.xTracer || event.target === board.yTracer) {
+            return;
+        }
         var location = getEventLocation(event);
         if(!location.x || !location.y) {
             if(allowCreation && createMode) {
@@ -102,6 +105,9 @@ function registerBoardEvents(board,hoverGridTarget,allowCreation,lookup) {
     });
     board.element.addEventListener("mouseleave",function(event){
         stopEvent(event);
+        if(event.target === board.xTracer || event.target === board.yTracer) {
+            return;
+        }
         clearGridTrace(hoverGridTarget,board.xTracer,board.yTracer);
         if(allowCreation && createMode) {
             removePendingCreation(lookup);
