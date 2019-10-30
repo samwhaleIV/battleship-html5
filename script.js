@@ -14,6 +14,16 @@ function getPiece(name,size) {
         name: name
     }
 }
+function createTracer(horizontal) {
+    var tracer = document.createElement("div");
+    tracer.classList.add("tracer");
+    if(horizontal) {
+        tracer.classList.add("horizontal");
+    } else {
+        tracer.classList.add("vertical");
+    }
+    return tracer;
+}
 function createBoard() {
     var table = document.createElement("div");
     table.classList.add("board");
@@ -39,7 +49,13 @@ function createBoard() {
         }
         lookup[y] = row;
     }
+    var horizontalTracer = createTracer(true);
+    var verticalTracer = createTracer(false);
+    table.appendChild(horizontalTracer);
+    table.appendChild(verticalTracer);
     return {
+        xTracer: horizontalTracer,
+        yTracer: verticalTracer,
         element: table,
         lookup: lookup
     };
@@ -54,34 +70,44 @@ function stopEvent(event) {
     event.preventDefault();
     event.stopPropagation();
 }
+function updateGridTrace(gridTarget,xTracer,yTracer,x,y,tracerX,tracerY) {
+    if(!x || !y) {
+        gridTarget.textContent = "";
+    } else {
+        var text = columnLabels.charAt(x-1) + y;
+        gridTarget.textContent = text;
+    } 
+    yTracer.style.transform = "translateY(" + (tracerY + y * 50 - 2) + "px)";
+    xTracer.style.transform = "translateX(" + (tracerX + x * 50 - 2) + "px)";
+}
+function clearGridTrace(gridTarget) {
+    gridTarget.textContent = "";
+}
 var createMode = false;
 function registerBoardEvents(board,hoverGridTarget,allowCreation,lookup) {
-    board.addEventListener("contextmenu",stopEvent);
-    board.addEventListener("mousemove",function(event){
+    board.element.addEventListener("contextmenu",stopEvent);
+    board.element.addEventListener("mousemove",function(event){
         stopEvent(event);
         var location = getEventLocation(event);
         if(!location.x || !location.y) {
             if(allowCreation && createMode) {
                 removePendingCreation(lookup);
             }
-            hoverGridTarget.textContent = "";
         } else {
             if(allowCreation && createMode) {
                 updatePendingCreation(location.x,location.y,lookup);
-            } else {
-                var text = columnLabels.charAt(location.x-1) + location.y;
-                hoverGridTarget.textContent = text;
             }
         }
+        updateGridTrace(hoverGridTarget,board.xTracer,board.yTracer,location.x,location.y,event.offsetX,event.offsetY);
     });
-    board.addEventListener("mouseleave",function(event){
+    board.element.addEventListener("mouseleave",function(event){
         stopEvent(event);
-        hoverGridTarget.textContent = "";
+        clearGridTrace(hoverGridTarget,board.xTracer,board.yTracer);
         if(allowCreation && createMode) {
             removePendingCreation(lookup);
         }
     });
-    board.addEventListener("mousedown",function(event){
+    board.element.addEventListener("mousedown",function(event){
         stopEvent(event);
         var location = getEventLocation(event);
         if(!location.x || !location.y) {
@@ -241,8 +267,8 @@ var board2 = createBoard();
 var controlsPanel = document.getElementById("controls-panel");
 var instructionLabel = document.getElementById("instruction-label");
 
-registerBoardEvents(board1.element,board1.element.children[0],true,board1.lookup);
-registerBoardEvents(board2.element,board2.element.children[0],false,board2.lookup);
+registerBoardEvents(board1,board1.element.children[0],true,board1.lookup);
+registerBoardEvents(board2,board2.element.children[0],false,board2.lookup);
 
 var boardContainer = document.getElementsByClassName("board-container")[0];
 boardContainer.appendChild(board1.element);
