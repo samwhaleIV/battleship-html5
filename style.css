@@ -1,8 +1,13 @@
+html, body {
+    width: 100%;
+    height: 100%;
+}
 body {
     background-color: #eeeeee;
-    margin: 0;
     padding: 0;
     overflow: hidden;
+
+    margin: 0;
 }
 div.board-container {
     margin-left: auto;
@@ -79,19 +84,23 @@ p#instruction-label {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 4px;
+    margin-top: 0;
 }
 .hidden {
     display: none !important;
 }
 div.vertical-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     height: 100%;
     width: 100%;
+    margin-top: -8px;
 }
 div.sub-container {
-    max-width: 100vw;
+    max-width: 100%;
+    height: 660px;
+    margin: 8px;
+    top: 50%;
+    position: relative;
+    transform: translateY(-50%);
 }
 div.tracer {
     position: absolute;
