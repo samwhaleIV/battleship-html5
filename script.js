@@ -77,8 +77,8 @@ function updateGridTrace(gridTarget,xTracer,yTracer,x,y,tracerX,tracerY) {
         var text = columnLabels.charAt(x-1) + y;
         gridTarget.textContent = text;
     } 
-    yTracer.style.transform = "translateY(" + (tracerY + y * 50 - 2) + "px)";
-    xTracer.style.transform = "translateX(" + (tracerX + x * 50 - 2) + "px)";
+    yTracer.style.transform = "translateY(" + (tracerY + y * gridTarget.clientHeight) + "px)";
+    xTracer.style.transform = "translateX(" + (tracerX + x * gridTarget.clientWidth) + "px)";
 }
 function clearGridTrace(gridTarget) {
     gridTarget.textContent = "";
@@ -88,9 +88,6 @@ function registerBoardEvents(board,hoverGridTarget,allowCreation,lookup) {
     board.element.addEventListener("contextmenu",stopEvent);
     board.element.addEventListener("mousemove",function(event){
         stopEvent(event);
-        if(event.target === board.xTracer || event.target === board.yTracer) {
-            return;
-        }
         var location = getEventLocation(event);
         if(!location.x || !location.y) {
             if(allowCreation && createMode) {
@@ -105,9 +102,6 @@ function registerBoardEvents(board,hoverGridTarget,allowCreation,lookup) {
     });
     board.element.addEventListener("mouseleave",function(event){
         stopEvent(event);
-        if(event.target === board.xTracer || event.target === board.yTracer) {
-            return;
-        }
         clearGridTrace(hoverGridTarget,board.xTracer,board.yTracer);
         if(allowCreation && createMode) {
             removePendingCreation(lookup);

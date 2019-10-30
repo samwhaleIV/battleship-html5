@@ -106,6 +106,7 @@ div.tracer {
     position: absolute;
     background-color: #191919;
     z-index: 3;
+    pointer-events: none;
 }
 div.tracer.horizontal {
     width: 1px;
