@@ -103,7 +103,7 @@ div.sub-container {
     transform: translateY(-50%);
 }
 div.tracer {
-    position: absolute;
+    position: fixed;
     background-color: #191919;
     z-index: 3;
     pointer-events: none;

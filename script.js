@@ -83,6 +83,12 @@ function updateGridTrace(gridTarget,xTracer,yTracer,x,y,tracerX,tracerY) {
 function clearGridTrace(gridTarget) {
     gridTarget.textContent = "";
 }
+function updateBoardSize(board) {
+    board.yTracer.style.transform = "translateY(0px)";
+    board.xTracer.style.transform = "translateX(0px)";
+    board.xTracer.style.height = board.element.clientHeight + "px";
+    board.yTracer.style.width = board.element.clientWidth + "px";
+}
 var createMode = false;
 function registerBoardEvents(board,hoverGridTarget,allowCreation,lookup) {
     board.element.addEventListener("contextmenu",stopEvent);
@@ -106,6 +112,9 @@ function registerBoardEvents(board,hoverGridTarget,allowCreation,lookup) {
         if(allowCreation && createMode) {
             removePendingCreation(lookup);
         }
+    });
+    window.addEventListener("resize",function(){
+        updateBoardSize(board);
     });
     board.element.addEventListener("mousedown",function(event){
         stopEvent(event);
@@ -273,3 +282,6 @@ registerBoardEvents(board2,board2.element.children[0],false,board2.lookup);
 var boardContainer = document.getElementsByClassName("board-container")[0];
 boardContainer.appendChild(board1.element);
 boardContainer.appendChild(board2.element);
+
+updateBoardSize(board1);
+updateBoardSize(board2);
